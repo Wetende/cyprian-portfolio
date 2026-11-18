@@ -46,7 +46,7 @@ if (controls) {
         if (show) visible++
       }
       for (const option of buttons) option.setAttribute('aria-pressed', String(option === button))
-      status.textContent = `Showing ${visible} ${visible === 1 ? 'project' : 'projects'}`
+      status.textContent = `Showing ${visible} ${visible === 1 ? 'item' : 'items'}`
     })
   }
 }

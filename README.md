@@ -1,7 +1,7 @@
 # Cyprian Wetende — Datecho portfolio
 
 A separate portfolio for Cyprian's technical role at Datecho Analytics: data
-applications, integrations and workflow automation. The original personal site
+analytics, Power BI reporting, data preparation, integrations and automation. The original personal site
 at https://wetende.github.io/portfolio/ is maintained separately and is not
 redirected or modified by this repository.
 
@@ -19,11 +19,16 @@ python3 scripts/check_site.py
 python3 -m http.server 8007 --directory dist
 ```
 
-Edit `content/portfolio.json` for the public copy. Prior project names were
+Edit `content/portfolio.json` for the public copy. Power BI reporting and data
+analysis are presented as Datecho service offerings, with scope and delivery
+methods rather than invented completed client engagements. Cyprian confirmed
+Power BI, Tableau, Excel and pandas alongside Python and SQL as personal skills.
+Prior project names were
 approved for reuse; those projects remain labelled as prior/independent work,
 with Datecho's own platform identified separately. Descriptions are grounded
 in the existing portfolio and the deployed Datecho application. No quantified
-business outcomes, BI projects or client endorsements are inferred.
+business outcomes or client endorsements are inferred. The retired CrossView
+project URL redirects to the portfolio rather than remaining in the work list.
 
 ## Hosting
 

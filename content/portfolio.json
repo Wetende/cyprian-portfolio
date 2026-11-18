@@ -2,8 +2,8 @@
   "name": "Cyprian Wetende",
   "role": "Technical Lead",
   "company": "Datecho Analytics",
-  "description": "Technical Lead at Datecho Analytics. Selected engineering work in data systems, API integrations, operational applications and workflow automation.",
-  "intro": "I build the systems and integrations that support analytics, reporting and everyday data workflows. At Datecho, my focus is connecting business data, automating workflows and keeping the underlying applications dependable.",
+  "description": "Cyprian Wetende, Technical Lead at Datecho Analytics. Power BI dashboards, data analysis, SQL, Python, Excel and Tableau, with integrations and reporting automation.",
+  "intro": "I turn business data into clear reports and practical insights. My work spans Power BI dashboards, data analysis with Python, pandas and SQL, and reporting in Excel and Tableau. At Datecho, I combine analytics with the integrations and automation that keep business information useful.",
   "linkedin": "https://www.linkedin.com/in/cyprian-wetende-289921324/",
   "github": "https://github.com/Wetende",
   "personal_portfolio": "https://wetende.github.io/portfolio/",
@@ -13,13 +13,83 @@
   "phone": "0799883309",
   "projects": [
     {
+      "slug": "power-bi-reporting",
+      "kind": "service",
+      "title": "Power BI dashboards & reporting",
+      "subtitle": "Business performance, clearly presented",
+      "context": "Datecho service offering",
+      "categories": [
+        "analytics-bi"
+      ],
+      "summary": "Interactive Power BI reports that bring business metrics, trends and comparisons into one clear view.",
+      "stack": [
+        "Power BI",
+        "SQL",
+        "Data modelling",
+        "Excel"
+      ],
+      "focus": "Business intelligence, KPI reporting and data visualisation",
+      "challenge": "Business information often sits across spreadsheets and operational systems. Decision-makers need consistent measures and clear reports that answer the questions behind day-to-day performance.",
+      "scope": [
+        "Define the business questions, reporting audience and key performance indicators.",
+        "Prepare and connect source data, with clear relationships and consistent metric definitions.",
+        "Build interactive Power BI report pages with filters, comparisons and drill-down views.",
+        "Validate report figures against the source data and document how the report should be used."
+      ],
+      "delivery": "Start with the decisions the report needs to support, then prepare the data, develop the report and review the figures with the team. The scope is agreed around the organisation’s actual data and reporting needs.",
+      "relevance": "Power BI reporting is part of Datecho’s analytics and visualisation services. I bring data preparation, modelling and technical integration together with the reporting layer.",
+      "link": "https://datecho.com/services/visualizations/",
+      "link_label": "Explore Datecho’s dashboard services"
+    },
+    {
+      "slug": "data-analysis-preparation",
+      "kind": "service",
+      "title": "Data analysis & preparation",
+      "subtitle": "From raw records to useful findings",
+      "context": "Datecho service offering",
+      "categories": [
+        "analytics-bi",
+        "automation"
+      ],
+      "summary": "Prepare, explore and analyse business data using Python, pandas, SQL and Excel, then communicate the findings through clear reports and visuals.",
+      "stack": [
+        "Python",
+        "pandas",
+        "SQL",
+        "Excel",
+        "Tableau"
+      ],
+      "focus": "Data cleaning, exploratory analysis and reporting",
+      "challenge": "Before a dataset can support a decision, its structure and quality need to be understood. Missing values, duplicate records, inconsistent formats and unclear definitions can hide the patterns people need to see.",
+      "scope": [
+        "Review data sources, field definitions, completeness and consistency.",
+        "Clean and transform records with Python, pandas, SQL and Excel.",
+        "Explore trends, category breakdowns and period comparisons relevant to the business question.",
+        "Present findings through summaries, charts and reporting views, including Tableau or Excel where appropriate.",
+        "Document preparation steps so the analysis can be checked and repeated."
+      ],
+      "delivery": "Agree the question, inspect and prepare the data, then examine the patterns and explain the findings. Repeatable preparation steps and clear definitions make the analysis easier to maintain as new data arrives.",
+      "relevance": "This offering aligns with Datecho’s data analytics services: preparing dependable data, interpreting operational information and making the findings useful to business teams.",
+      "link": "https://datecho.com/services/data-analytics/",
+      "link_label": "Explore Datecho’s data analytics services"
+    },
+    {
       "slug": "datecho-platform",
       "title": "Datecho Analytics",
       "subtitle": "A data-backed company platform",
       "context": "Datecho platform engineering",
-      "categories": ["data-applications", "integrations"],
+      "categories": [
+        "data-applications",
+        "integrations"
+      ],
       "summary": "A Django and MySQL platform connecting company content, enquiries and media to the public website.",
-      "stack": ["Python", "Django", "MySQL", "React", "Inertia.js"],
+      "stack": [
+        "Python",
+        "Django",
+        "MySQL",
+        "React",
+        "Inertia.js"
+      ],
       "focus": "Structured content, enquiry records and reliable delivery",
       "image": "datecho-platform.webp",
       "image_alt": "Datecho Analytics homepage with its analytics headline and chart image",
@@ -36,33 +106,21 @@
       "link_label": "Visit Datecho Analytics"
     },
     {
-      "slug": "crossview-learning-records",
-      "title": "CrossView",
-      "subtitle": "Learning records and progression workflows",
-      "context": "Prior / independent engineering work",
-      "categories": ["data-applications"],
-      "summary": "A shared learning-platform engine covering course structures, progression, prerequisites, scheduled access and assessments.",
-      "stack": ["Python", "Django", "PostgreSQL", "Inertia.js"],
-      "focus": "Operational records and application workflows",
-      "challenge": "A learning platform brings together related records: courses, learners, access rules, progression and assessments. Those relationships need to be represented consistently across the application.",
-      "scope": [
-        "Course-builder structures and shared learning-platform conventions.",
-        "Student progression, prerequisite and scheduled-access workflows.",
-        "Assessment workflows within a shared Django platform."
-      ],
-      "delivery": "The work centres on a common learning-platform engine: course structures, access rules, progression and assessment behaviour carried across application journeys.",
-      "relevance": "Reporting begins with the records an organisation produces. Experience with related operational records is relevant when defining data structures and application rules around a reporting requirement.",
-      "link": "https://wetende.github.io/portfolio/#work",
-      "link_label": "View my wider engineering portfolio"
-    },
-    {
       "slug": "kyrochat-knowledge-workflows",
       "title": "KyroChat",
       "subtitle": "Knowledge retrieval and support automation",
       "context": "Prior / independent engineering work",
-      "categories": ["automation", "integrations"],
+      "categories": [
+        "automation",
+        "integrations"
+      ],
       "summary": "An AI support and operations platform built around knowledge retrieval, a shared assistant core, guardrails and channel integrations.",
-      "stack": ["Python", "FastAPI", "React / Next.js", "Vector retrieval"],
+      "stack": [
+        "Python",
+        "FastAPI",
+        "React / Next.js",
+        "Vector retrieval"
+      ],
       "focus": "Knowledge access and connected workflows",
       "challenge": "Useful support automation depends on access to relevant knowledge and clear system boundaries. A shared core needs to work with the interfaces and channels through which people use it.",
       "scope": [
@@ -80,9 +138,18 @@
       "title": "DigiKaTech",
       "subtitle": "Enrolment, checkout and learner journeys",
       "context": "Prior / independent engineering work",
-      "categories": ["integrations", "data-applications"],
+      "categories": [
+        "integrations",
+        "data-applications"
+      ],
       "summary": "A technical education platform connecting public learning pathways, payment checkout and learner progression through one application experience.",
-      "stack": ["Django", "Inertia.js", "React", "M-Pesa", "Paystack"],
+      "stack": [
+        "Django",
+        "Inertia.js",
+        "React",
+        "M-Pesa",
+        "Paystack"
+      ],
       "focus": "Provider integrations and connected application journeys",
       "challenge": "Learning pathways, checkout and student progression are separate parts of one experience. Connecting them requires clear application flows and deliberate integration with external providers.",
       "scope": [
@@ -98,30 +165,67 @@
   ],
   "capabilities": [
     {
-      "title": "Data applications",
-      "description": "Model related operational records and build the application workflows around them.",
-      "tools": "Python · Django · MySQL · PostgreSQL"
+      "title": "Power BI & business intelligence",
+      "description": "Build interactive dashboards and reports around business metrics, trends and performance questions.",
+      "tools": "Power BI · KPI reporting · Data visualisation"
     },
     {
-      "title": "API integrations",
-      "description": "Connect applications and external providers so information can move through a useful workflow.",
-      "tools": "REST APIs · FastAPI · Provider integrations"
+      "title": "Python & data analysis",
+      "description": "Prepare and explore datasets, compare patterns and turn raw records into clear analytical findings.",
+      "tools": "Python · pandas · Data preparation"
     },
     {
-      "title": "Workflow automation",
-      "description": "Bring application logic, knowledge retrieval and integrations together around an operational task.",
-      "tools": "Python · Knowledge retrieval · Application logic"
+      "title": "SQL & data modelling",
+      "description": "Query, join and summarise relational data, with clear structures and relationships for reporting.",
+      "tools": "SQL · MySQL · PostgreSQL"
     },
     {
-      "title": "Operational interfaces",
-      "description": "Give people clear ways to use the records and workflows behind a platform.",
-      "tools": "React · Inertia.js · JavaScript"
+      "title": "Excel & Tableau",
+      "description": "Analyse business data and communicate findings through spreadsheet reports and visual reporting views.",
+      "tools": "Excel · Tableau · Visual analysis"
+    },
+    {
+      "title": "Data quality & validation",
+      "description": "Check completeness, duplicates, formats and consistency before data is used in analysis or reports.",
+      "tools": "Data cleaning · Validation · Consistent definitions"
+    },
+    {
+      "title": "Data integration & automation",
+      "description": "Connect business systems and automate repeatable data preparation and reporting workflows.",
+      "tools": "APIs · Python · Workflow automation"
     }
   ],
   "steps": [
-    {"title": "Understand the need", "description": "Start with the decision or operational task, the people involved and what a useful handover looks like."},
-    {"title": "Map the information", "description": "Identify the records, sources, relationships and integration boundaries that the workflow depends on."},
-    {"title": "Build and connect", "description": "Implement the application behaviour, interfaces and provider connections around those requirements."},
-    {"title": "Validate and hand over", "description": "Check the actual workflow, document its operation and make the next steps clear."}
+    {
+      "title": "Define the business question",
+      "description": "Identify the decisions, audience and measures the analysis or report needs to support."
+    },
+    {
+      "title": "Prepare and understand the data",
+      "description": "Review the sources, clean and validate records, and define the relationships and calculations."
+    },
+    {
+      "title": "Analyse and visualise",
+      "description": "Explore patterns and build clear reports or dashboards using the tools that fit the requirement."
+    },
+    {
+      "title": "Validate and hand over",
+      "description": "Check the figures against source records, explain the findings and document the repeatable workflow."
+    }
+  ],
+  "expertise_topics": [
+    "Power BI",
+    "Tableau",
+    "Excel",
+    "pandas",
+    "Python",
+    "SQL",
+    "Data analysis",
+    "Data modelling",
+    "Data integration",
+    "Reporting automation"
+  ],
+  "retired_project_slugs": [
+    "crossview-learning-records"
   ]
 }

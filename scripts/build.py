@@ -2,6 +2,7 @@
 """Build a small, pre-rendered portfolio without runtime dependencies."""
 import argparse
 from datetime import datetime, timedelta, timezone
+from hashlib import sha256
 from html import escape
 import json
 from pathlib import Path
@@ -14,6 +15,10 @@ ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
 DATA = json.loads((ROOT / "content/portfolio.json").read_text())
 CONFIG = json.loads((ROOT / "site-config.json").read_text())
+ASSET_VERSIONS = {
+    name: sha256((ROOT / "assets" / name).read_bytes()).hexdigest()[:12]
+    for name in ("style.css", "site.js")
+}
 parser = argparse.ArgumentParser()
 parser.add_argument("--base-url", default=CONFIG["base_url"])
 args = parser.parse_args()
@@ -24,7 +29,9 @@ if parts.scheme != "https" or not parts.netloc or parts.query or parts.fragment:
 if CONFIG.get("custom_domain") and parts.hostname != CONFIG["custom_domain"]:
     raise SystemExit("The canonical base URL must match the configured custom domain.")
 slugs = [row["slug"] for row in DATA["projects"]]
-if len(set(slugs)) != len(slugs) or not all(re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug) for slug in slugs):
+retired_slugs = DATA.get("retired_project_slugs", [])
+all_slugs = slugs + retired_slugs
+if len(set(all_slugs)) != len(all_slugs) or not all(re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug) for slug in all_slugs):
     raise SystemExit("Project slugs must be unique URL-safe names.")
 if DIST.is_symlink():
     raise SystemExit("Refusing to replace a symlinked build directory.")
@@ -45,7 +52,7 @@ def person():
         "image": urljoin(BASE, "assets/cyprian-wetende.webp"),
         "worksFor": {"@type": "Organization", "name": DATA["company"], "url": DATA["company_url"]},
         "sameAs": [DATA["linkedin"], DATA["github"], DATA["personal_portfolio"]],
-        "knowsAbout": ["Data systems", "API integrations", "Workflow automation", "Python", "Django", "React"],
+        "knowsAbout": DATA["expertise_topics"],
     }
 
 
@@ -71,8 +78,8 @@ def head(title, description, path="", prefix="", noindex=False):
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="{e(prefix)}assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="{e(prefix)}assets/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="{e(prefix)}assets/style.css">
-  <script src="{e(prefix)}assets/site.js" defer></script>
+  <link rel="stylesheet" href="{e(prefix)}assets/style.css?v={ASSET_VERSIONS['style.css']}">
+  <script src="{e(prefix)}assets/site.js?v={ASSET_VERSIONS['site.js']}" defer></script>
   <script type="application/ld+json">{structured}</script>
 </head><body>'''
 
@@ -88,8 +95,8 @@ def header(prefix=""):
   </a>
   <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" hidden>Menu</button>
   <nav class="site-nav" id="primary-nav" aria-label="Main navigation">
-    <a href="{e(prefix)}#work">Selected work</a>
-    <a href="{e(prefix)}#expertise">Expertise</a>
+    <a href="{e(prefix)}#expertise">Data expertise</a>
+    <a href="{e(prefix)}#work">Services & work</a>
     <a href="{e(prefix)}#approach">Approach</a>
     <a class="button button-dark" href="{e(DATA['contact_url'])}">Let’s talk <span aria-hidden="true">↗</span></a>
   </nav>
@@ -116,7 +123,7 @@ def contact():
 <section class="contact-band" id="contact"><div class="container contact-grid">
   <div class="contact-copy"><p class="eyebrow">A conversation is a useful first step</p>
     <h2>Have a data workflow that needs to work better?</h2>
-    <p>Talk with Datecho about your sources, systems and reporting needs. I work on the technical foundations that connect them.</p>
+    <p>Talk with Datecho about your data analysis, Power BI dashboards and reporting needs. I bring the analytics and technical delivery together.</p>
   </div>
   <div class="contact-links">
     <a class="button button-gold" href="{e(DATA['contact_url'])}">Discuss a project <span aria-hidden="true">↗</span></a>
@@ -130,6 +137,7 @@ def contact():
 def project_row(row, index):
     tags = "".join(f'<li class="tag">{e(tool)}</li>' for tool in row["stack"])
     href = f'work/{row["slug"]}/'
+    label = "Service details" if row.get("kind") == "service" else "Project notes"
     return f'''
 <article class="project-row" data-categories="{e(' '.join(row['categories']))}">
   <span class="project-index" aria-hidden="true">{index:02d}</span>
@@ -139,7 +147,7 @@ def project_row(row, index):
     <p class="project-summary">{e(row['summary'])}</p>
     <ul class="project-tags" aria-label="Technologies">{tags}</ul>
   </div>
-  <a class="project-link" href="{e(href)}" aria-label="Read the {e(row['title'])} project notes">Project notes <span aria-hidden="true">↗</span></a>
+  <a class="project-link" href="{e(href)}" aria-label="Read {e(row['title'])}: {label.lower()}">{label} <span aria-hidden="true">↗</span></a>
 </article>'''
 
 
@@ -147,41 +155,42 @@ def home_page():
     work = "".join(project_row(row, index) for index, row in enumerate(DATA["projects"], 1))
     capabilities = "".join(f'''<article class="capability"><h3>{e(row['title'])}</h3><p>{e(row['description'])}</p><p class="tool-list">{e(row['tools'])}</p></article>''' for row in DATA["capabilities"])
     steps = "".join(f'''<li><span class="step-number" aria-hidden="true">{index:02d}</span><div><h3>{e(row['title'])}</h3><p>{e(row['description'])}</p></div></li>''' for index, row in enumerate(DATA["steps"], 1))
-    return head("Cyprian Wetende — Data Systems & Automation | Datecho", DATA["description"]) + header() + f'''
+    return head("Cyprian Wetende — Data Analytics & Power BI | Datecho", DATA["description"]) + header() + f'''
 <main id="main">
   <section class="hero" id="top"><div class="container">
     <div class="hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">Technical Lead / Datecho Analytics</p>
-        <h1>The systems behind <em>useful data.</em></h1>
+        <h1>Clear data.<br><em>Better decisions.</em></h1>
         <p class="hero-intro">I’m Cyprian Wetende. {e(DATA['intro'])}</p>
-        <div class="actions"><a class="button button-gold" href="#work">Explore selected work <span aria-hidden="true">↓</span></a><a class="button button-outline" href="{e(DATA['linkedin'])}">Connect on LinkedIn <span aria-hidden="true">↗</span></a></div>
+        <div class="actions"><a class="button button-gold" href="#expertise">Explore data expertise <span aria-hidden="true">↓</span></a><a class="button button-outline" href="{e(DATA['linkedin'])}">Connect on LinkedIn <span aria-hidden="true">↗</span></a></div>
       </div>
-      <figure class="hero-portrait"><img src="assets/cyprian-wetende.webp" width="900" height="1125" alt="Cyprian Wetende working at a laptop" fetchpriority="high" decoding="async"><figcaption><strong>Cyprian Wetende</strong><span>Data systems · integrations · automation</span></figcaption></figure>
+      <figure class="hero-portrait"><img src="assets/cyprian-wetende.webp" width="900" height="1125" alt="Cyprian Wetende working at a laptop" fetchpriority="high" decoding="async"><figcaption><strong>Cyprian Wetende</strong><span>Analytics · Power BI · automation</span></figcaption></figure>
     </div>
-    <div class="hero-notes"><span>Engineering the applications and workflows around the data.</span><a href="{e(DATA['company_url'])}">Part of Datecho Analytics <span aria-hidden="true">↗</span></a></div>
-  </div></section>
-
-  <section class="section" id="work"><div class="container">
-    <div class="section-heading"><div><p class="eyebrow">01 / Selected engineering work</p><h2>Practical work.<br>A data-first lens.</h2></div><p class="section-intro">A selection from Datecho’s own platform and my prior engineering work. Each project is shown through its records, integrations and operational workflows.</p></div>
-    <div class="filter-bar" data-filter-controls hidden role="group" aria-label="Filter selected work">
-      <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All work</button>
-      <button class="filter-button" type="button" data-filter="data-applications" aria-pressed="false">Data applications</button>
-      <button class="filter-button" type="button" data-filter="integrations" aria-pressed="false">Integrations</button>
-      <button class="filter-button" type="button" data-filter="automation" aria-pressed="false">Automation</button>
-      <p class="filter-status" aria-live="polite">Showing {len(DATA['projects'])} projects</p>
-    </div>
-    <div class="project-list">{work}</div>
+    <div class="hero-notes"><span>Power BI · Python & pandas · SQL · Excel · Tableau</span><a href="{e(DATA['company_url'])}">Part of Datecho Analytics <span aria-hidden="true">↗</span></a></div>
   </div></section>
 
   <section class="section section-mint" id="expertise"><div class="container">
-    <div class="section-heading"><div><p class="eyebrow">02 / Where I fit</p><h2>The technical foundations around analytics.</h2></div><p class="section-intro">Datecho brings analytics, reporting and business systems together. My contribution is the software and integration work that helps those requirements become usable workflows.</p></div>
+    <div class="section-heading"><div><p class="eyebrow">01 / Data expertise</p><h2>Analytics, reporting<br>and the data behind them.</h2></div><p class="section-intro">From preparing a dataset to building a Power BI dashboard, I work across the data workflow. My skills bring analysis, visual reporting and automation into Datecho’s service delivery.</p></div>
     <div class="capability-grid">{capabilities}</div>
     <p><a class="text-link" href="https://datecho.com/services/">Explore Datecho’s services <span aria-hidden="true">↗</span></a></p>
   </div></section>
 
+  <section class="section" id="work"><div class="container">
+    <div class="section-heading"><div><p class="eyebrow">02 / Services & selected work</p><h2>Data services.<br>Practical delivery.</h2></div><p class="section-intro">Power BI reporting and data analysis are services I offer through Datecho. Alongside them, selected platform and integration projects show the technical work behind my delivery.</p></div>
+    <div class="filter-bar" data-filter-controls hidden role="group" aria-label="Filter selected work">
+      <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All services & work</button>
+      <button class="filter-button" type="button" data-filter="analytics-bi" aria-pressed="false">Analytics & BI</button>
+      <button class="filter-button" type="button" data-filter="data-applications" aria-pressed="false">Data applications</button>
+      <button class="filter-button" type="button" data-filter="integrations" aria-pressed="false">Integrations</button>
+      <button class="filter-button" type="button" data-filter="automation" aria-pressed="false">Automation</button>
+      <p class="filter-status" aria-live="polite">Showing {len(DATA['projects'])} items</p>
+    </div>
+    <div class="project-list">{work}</div>
+  </div></section>
+
   <section class="section" id="approach"><div class="container approach-grid">
-    <div class="approach-intro"><p class="eyebrow">03 / How I approach a brief</p><h2>Start with the workflow.<br>Make the connections clear.</h2><p class="section-intro">The useful questions come first: what information is needed, where it comes from, who uses it and what the system must do with it.</p></div>
+    <div class="approach-intro"><p class="eyebrow">03 / How I approach a brief</p><h2>Start with the question.<br>Make the findings clear.</h2><p class="section-intro">Understand the business question, prepare dependable data and communicate the findings in a form people can use.</p></div>
     <ol class="steps">{steps}</ol>
   </div></section>
   {contact()}
@@ -193,6 +202,11 @@ def case_page(row, index):
     path = f'work/{row["slug"]}/'
     scope = "".join(f'<li>{e(item)}</li>' for item in row["scope"])
     tools = "".join(f'<li class="tag">{e(tool)}</li>' for tool in row["stack"])
+    service = row.get("kind") == "service"
+    entry_label = "Service" if service else "Project notes"
+    scope_label = "Service scope" if service else "Engineering scope"
+    delivery_label = "How I deliver" if service else "The work in practice"
+    perspective = "Data analytics & reporting" if service else "Technical engineering"
     image = ""
     if row.get("image"):
         image = f'''<figure class="case-figure"><img src="{prefix}assets/{e(row['image'])}" alt="{e(row['image_alt'])}" width="1200" height="552" loading="lazy" decoding="async"><figcaption>Public Datecho platform · homepage view</figcaption></figure>'''
@@ -201,26 +215,26 @@ def case_page(row, index):
 <main id="main">
   <section class="case-hero"><div class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{prefix}#work">Selected work</a><span aria-hidden="true">/</span><span aria-current="page">{e(row['title'])}</span></nav>
-    <p class="eyebrow case-kicker">Project notes / {e(row['context'])}</p>
+    <p class="eyebrow case-kicker">{entry_label} / {e(row['context'])}</p>
     <h1 class="case-title">{e(row['title'])}<br>{e(row['subtitle'])}</h1>
     <p class="case-summary">{e(row['summary'])}</p>
-    <div class="case-meta"><div class="meta-item"><strong>Context</strong><span>{e(row['context'])}</span></div><div class="meta-item"><strong>Engineering focus</strong><span>{e(row['focus'])}</span></div><div class="meta-item"><strong>Perspective</strong><span>Cyprian Wetende · Technical engineering</span></div></div>
+    <div class="case-meta"><div class="meta-item"><strong>Context</strong><span>{e(row['context'])}</span></div><div class="meta-item"><strong>Focus</strong><span>{e(row['focus'])}</span></div><div class="meta-item"><strong>Perspective</strong><span>Cyprian Wetende · {perspective}</span></div></div>
   </div></section>
   <div class="container case-layout">
     <div class="case-body">
       <section class="case-block"><h2>The data and workflow challenge</h2><p>{e(row['challenge'])}</p></section>
       {image}
-      <section class="case-block"><h2>Engineering scope</h2><ul>{scope}</ul></section>
-      <section class="case-block"><h2>The work in practice</h2><p>{e(row['delivery'])}</p></section>
+      <section class="case-block"><h2>{scope_label}</h2><ul>{scope}</ul></section>
+      <section class="case-block"><h2>{delivery_label}</h2><p>{e(row['delivery'])}</p></section>
       <section class="case-block"><h2>How this connects to Datecho</h2><p>{e(row['relevance'])}</p></section>
     </div>
     <aside class="case-sidebar" aria-label="Project details">
       <section class="sidebar-block"><h2>Technologies</h2><ul class="project-tags">{tools}</ul></section>
-      <section class="sidebar-block"><h2>Project context</h2><p>{e(row['context'])}</p><p><a class="text-link" href="{e(row['link'])}">{e(row['link_label'])} <span aria-hidden="true">↗</span></a></p></section>
+      <section class="sidebar-block"><h2>{'Service context' if service else 'Project context'}</h2><p>{e(row['context'])}</p><p><a class="text-link" href="{e(row['link'])}">{e(row['link_label'])} <span aria-hidden="true">↗</span></a></p></section>
       <section class="sidebar-block"><h2>Talk about a similar requirement</h2><p>Discuss your systems, sources and workflow with Datecho.</p><p><a class="text-link" href="{e(DATA['contact_url'])}">Start a conversation <span aria-hidden="true">↗</span></a></p></section>
     </aside>
   </div>
-  <section class="case-next"><div class="container"><p class="eyebrow">Next project</p><h2><a href="../{e(next_row['slug'])}/">{e(next_row['title'])} <span aria-hidden="true">↗</span></a></h2><p>{e(next_row['subtitle'])}</p></div></section>
+  <section class="case-next"><div class="container"><p class="eyebrow">Continue exploring</p><h2><a href="../{e(next_row['slug'])}/">{e(next_row['title'])} <span aria-hidden="true">↗</span></a></h2><p>{e(next_row['subtitle'])}</p></div></section>
 </main>''' + footer()
 
 
@@ -229,6 +243,13 @@ for index, row in enumerate(DATA["projects"]):
     target = DIST / "work" / row["slug"]
     target.mkdir(parents=True)
     (target / "index.html").write_text(case_page(row, index), encoding="utf-8")
+for slug in retired_slugs:
+    target = DIST / "work" / slug
+    target.mkdir(parents=True)
+    redirect = head("Explore Cyprian’s portfolio | Datecho", DATA["description"], prefix="../../", noindex=True)
+    redirect = redirect.replace("</head>", '<meta http-equiv="refresh" content="0;url=../../#work"></head>')
+    redirect += '<main id="main"><section class="section container"><h1>Explore services and selected work</h1><p><a href="../../#work">Continue to the portfolio</a></p></section></main>' + footer()
+    (target / "index.html").write_text(redirect, encoding="utf-8")
 not_found = head("Page not found | Cyprian Wetende", "Return to Cyprian Wetende’s selected engineering work.", "404.html", BASE, True) + header(BASE)
 not_found += f'<main id="main"><section class="section"><div class="container"><p class="eyebrow">404 / Page not found</p><h1>This page is not available.</h1><p class="section-intro">Return to the portfolio to explore selected work and contact details.</p><div class="actions"><a class="button button-dark" href="{e(BASE)}">Back to the portfolio</a></div></div></section></main>' + footer()
 (DIST / "404.html").write_text(not_found, encoding="utf-8")
@@ -240,4 +261,4 @@ for path in [""] + [f'work/{row["slug"]}/' for row in DATA["projects"]]:
     node = ET.SubElement(sitemap, "{http://www.sitemaps.org/schemas/sitemap/0.9}url")
     ET.SubElement(node, "{http://www.sitemaps.org/schemas/sitemap/0.9}loc").text = urljoin(BASE, path)
 ET.ElementTree(sitemap).write(DIST / "sitemap.xml", encoding="utf-8", xml_declaration=True)
-print(f"Built homepage, {len(DATA['projects'])} project pages, 404 page and sitemap for {BASE}")
+print(f"Built homepage, {len(DATA['projects'])} service/project pages, {len(retired_slugs)} redirect(s), 404 page and sitemap for {BASE}")

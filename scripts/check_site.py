@@ -66,8 +66,8 @@ css = DIST / "assets/style.css"
 for value in re.findall(r'url\(["\x27]?([^\)"\x27]+)', css.read_text()):
     assert (css.parent / value).is_file(), value
 
-projects = json.loads((ROOT / "content/portfolio.json").read_text())["projects"]
-assert len(documents) == len(projects) + 2
+content = json.loads((ROOT / "content/portfolio.json").read_text())
+assert len(documents) == len(content["projects"]) + len(content.get("retired_project_slugs", [])) + 2
 assert (DIST / "robots.txt").is_file() and (DIST / "sitemap.xml").is_file()
 assert not any(path.name == ".cache" for path in DIST.rglob("*"))
 print(f"Verified {len(documents)} pages, {references} local references, both fonts and SEO files.")
