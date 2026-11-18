@@ -1,0 +1,127 @@
+{
+  "name": "Cyprian Wetende",
+  "role": "Technical Lead",
+  "company": "Datecho Analytics",
+  "description": "Technical Lead at Datecho Analytics. Selected engineering work in data systems, API integrations, operational applications and workflow automation.",
+  "intro": "I build the systems and integrations that support analytics, reporting and everyday data workflows. At Datecho, my focus is connecting business data, automating workflows and keeping the underlying applications dependable.",
+  "linkedin": "https://www.linkedin.com/in/cyprian-wetende-289921324/",
+  "github": "https://github.com/Wetende",
+  "personal_portfolio": "https://wetende.github.io/portfolio/",
+  "company_url": "https://datecho.com/",
+  "contact_url": "https://datecho.com/contact/",
+  "email": "info@datecho.com",
+  "phone": "0799883309",
+  "projects": [
+    {
+      "slug": "datecho-platform",
+      "title": "Datecho Analytics",
+      "subtitle": "A data-backed company platform",
+      "context": "Datecho platform engineering",
+      "categories": ["data-applications", "integrations"],
+      "summary": "A Django and MySQL platform connecting company content, enquiries and media to the public website.",
+      "stack": ["Python", "Django", "MySQL", "React", "Inertia.js"],
+      "focus": "Structured content, enquiry records and reliable delivery",
+      "image": "datecho-platform.webp",
+      "image_alt": "Datecho Analytics homepage with its analytics headline and chart image",
+      "challenge": "Company pages depend on more than their layout. Content, staff profiles, uploaded images and enquiries need a consistent home in the application, with a dependable path from the database to the website.",
+      "scope": [
+        "Django models and CMS-backed company content, including services, team profiles and media.",
+        "Enquiry persistence before notification email, so an email failure does not discard the enquiry.",
+        "Explicit production database configuration, repeatable content setup and media-delivery checks.",
+        "Public interfaces built with React and Inertia, with permission-aware client proof and consent-gated analytics."
+      ],
+      "delivery": "The production rollout was checked against the actual MySQL database and public pages. Contact details, staff profiles and responsive homepage images were verified after deployment.",
+      "relevance": "This is the application layer around an analytics business: organising records, validating updates and making information available through consistent interfaces. That same discipline supports trustworthy reporting workflows.",
+      "link": "https://datecho.com/",
+      "link_label": "Visit Datecho Analytics"
+    },
+    {
+      "slug": "crossview-learning-records",
+      "title": "CrossView",
+      "subtitle": "Learning records and progression workflows",
+      "context": "Prior / independent engineering work",
+      "categories": ["data-applications"],
+      "summary": "A shared learning-platform engine covering course structures, progression, prerequisites, scheduled access and assessments.",
+      "stack": ["Python", "Django", "PostgreSQL", "Inertia.js"],
+      "focus": "Operational records and application workflows",
+      "challenge": "A learning platform brings together related records: courses, learners, access rules, progression and assessments. Those relationships need to be represented consistently across the application.",
+      "scope": [
+        "Course-builder structures and shared learning-platform conventions.",
+        "Student progression, prerequisite and scheduled-access workflows.",
+        "Assessment workflows within a shared Django platform."
+      ],
+      "delivery": "The work centres on a common learning-platform engine: course structures, access rules, progression and assessment behaviour carried across application journeys.",
+      "relevance": "Reporting begins with the records an organisation produces. Experience with related operational records is relevant when defining data structures and application rules around a reporting requirement.",
+      "link": "https://wetende.github.io/portfolio/#work",
+      "link_label": "View my wider engineering portfolio"
+    },
+    {
+      "slug": "kyrochat-knowledge-workflows",
+      "title": "KyroChat",
+      "subtitle": "Knowledge retrieval and support automation",
+      "context": "Prior / independent engineering work",
+      "categories": ["automation", "integrations"],
+      "summary": "An AI support and operations platform built around knowledge retrieval, a shared assistant core, guardrails and channel integrations.",
+      "stack": ["Python", "FastAPI", "React / Next.js", "Vector retrieval"],
+      "focus": "Knowledge access and connected workflows",
+      "challenge": "Useful support automation depends on access to relevant knowledge and clear system boundaries. A shared core needs to work with the interfaces and channels through which people use it.",
+      "scope": [
+        "Custom knowledge retrieval using vector-based search.",
+        "A shared assistant core with guardrails and provider integrations.",
+        "Website and messaging-channel adapters for support and operations workflows."
+      ],
+      "delivery": "A shared assistant core brings knowledge retrieval and guardrails into the application. Channel adapters connect that core to website and messaging interfaces.",
+      "relevance": "Many data workflows involve finding and using organisational knowledge. Retrieval and integration experience is useful when connecting information sources to practical operational tools.",
+      "link": "https://wetende.github.io/portfolio/#work",
+      "link_label": "View my wider engineering portfolio"
+    },
+    {
+      "slug": "digikatech-integrations",
+      "title": "DigiKaTech",
+      "subtitle": "Enrolment, checkout and learner journeys",
+      "context": "Prior / independent engineering work",
+      "categories": ["integrations", "data-applications"],
+      "summary": "A technical education platform connecting public learning pathways, payment checkout and learner progression through one application experience.",
+      "stack": ["Django", "Inertia.js", "React", "M-Pesa", "Paystack"],
+      "focus": "Provider integrations and connected application journeys",
+      "challenge": "Learning pathways, checkout and student progression are separate parts of one experience. Connecting them requires clear application flows and deliberate integration with external providers.",
+      "scope": [
+        "Public education pathways and student-facing application journeys.",
+        "M-Pesa and Paystack checkout integrations.",
+        "Django, Inertia and React interfaces supporting learning progression."
+      ],
+      "delivery": "Learning pathways, payment checkout and student progression are connected through a Django and Inertia application, with React providing the student-facing interface.",
+      "relevance": "Integration work is relevant when business information has to move between tools. It provides experience with application boundaries, provider APIs and the operational journeys that produce data.",
+      "link": "https://wetende.github.io/portfolio/#work",
+      "link_label": "View my wider engineering portfolio"
+    }
+  ],
+  "capabilities": [
+    {
+      "title": "Data applications",
+      "description": "Model related operational records and build the application workflows around them.",
+      "tools": "Python · Django · MySQL · PostgreSQL"
+    },
+    {
+      "title": "API integrations",
+      "description": "Connect applications and external providers so information can move through a useful workflow.",
+      "tools": "REST APIs · FastAPI · Provider integrations"
+    },
+    {
+      "title": "Workflow automation",
+      "description": "Bring application logic, knowledge retrieval and integrations together around an operational task.",
+      "tools": "Python · Knowledge retrieval · Application logic"
+    },
+    {
+      "title": "Operational interfaces",
+      "description": "Give people clear ways to use the records and workflows behind a platform.",
+      "tools": "React · Inertia.js · JavaScript"
+    }
+  ],
+  "steps": [
+    {"title": "Understand the need", "description": "Start with the decision or operational task, the people involved and what a useful handover looks like."},
+    {"title": "Map the information", "description": "Identify the records, sources, relationships and integration boundaries that the workflow depends on."},
+    {"title": "Build and connect", "description": "Implement the application behaviour, interfaces and provider connections around those requirements."},
+    {"title": "Validate and hand over", "description": "Check the actual workflow, document its operation and make the next steps clear."}
+  ]
+}
